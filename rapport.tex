@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+
+\title{Rapport de Mi-Projet: Assistant de Jeu d'Échecs Basé sur un LLM}
+\author{ChessLLM: \\ Membres: Briac Six, Jason Perez, Samy Hadj-said}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents % Ajoute le sommaire ici
+
+\newpage % Passe à une nouvelle page pour commencer le contenu principal
+
+\section{Project Description}
+\subsection{Objective}
+The aim of this project is to train an LLM on PGN-formatted chess games, enabling it to analyze positions and suggest optimal moves. By treating chess moves as a sequence prediction problem, this project bridges the domains of structured logic and natural language processing, exploring how LLMs can be adapted to follow strict game rules while exhibiting strategic reasoning.
+
+\subsection{Context and Relevance}
+Chess, being a game of both strategy and computation, has long served as a benchmark for artificial intelligence. Unlike traditional chess engines, which rely on brute-force search and handcrafted evaluation functions, our project focuses on leveraging the inherent pattern-recognition capabilities of LLMs. These models, trained on massive amounts of data, excel at identifying context and generating outputs that mirror human-like reasoning.
+
+\subsection{Innovation and Applications}
+One key innovation of this project lies in its approach to training. By framing chess as a sequential decision-making task, the LLM can learn patterns in move progression, capturing not only the rules of chess but also the strategies embedded within millions of historical games. This approach is particularly useful in emulating human intuition and decision-making, making it ideal for applications like chess education, game analysis, and simulating diverse opponents.
+
+\subsection{Challenges}
+Adapting LLMs to the rigid rules of chess presents unique challenges. Unlike free-form text generation, chess requires strict adherence to legal move sets and strategic coherence. The model must learn to avoid illegal moves, such as placing the king in check, while simultaneously proposing moves that align with long-term strategic goals.
+
+\textbf{Key Challenge:} Ensuring that the LLM accurately models chess rules and strategy, especially in positions requiring deep tactical calculations.
+
+\section{Project Background}
+\subsection{Existing Research}
+Our project builds on innovative work showing how language models, traditionally designed for text tasks, can adapt to strategy-based games like chess. One notable example is Nicholas Carlini's exploration of GPT-3.5-turbo-instruct, which could play human-like chess despite lacking chess-specific training.
+
+\subsection{Challenges in Existing Approaches}
+Carlini observed that GPT-3.5 could track board states by sequentially processing each move, implying "world modeling" within the model’s internal states. However, since GPT-3.5 is optimized for language rather than chess, it occasionally favored plausible moves over optimal ones, highlighting its limitations in competitive gameplay.
+
+\subsection{How Our Project Differs}
+Our project fine-tunes or trains a model on curated PGN data, customizing it for consistent, high-quality move recommendations. This approach builds on Carlini’s insights and Google’s findings by optimizing the fine-tuning process for chess and emphasizing real-time applications through an interactive web-based chessboard interface.
+
+\section{Project Steps}
+\subsection{Data Collection and Preprocessing}
+\begin{itemize}
+    \item Gather a large dataset of PGN-formatted games from online chess repositories (e.g., Lichess).
+    \item Clean the data and ensure consistent formatting.
+    \item Extract input-output sequences for training.
+\end{itemize}
+
+\subsection{Model Selection and Training}
+\begin{itemize}
+    \item Choose a pre-trained GPT-like model as the base architecture or train a model from scratch.
+    \item Fine-tune the pre-trained model on extracted game sequences to generate accurate and legal moves.
+\end{itemize}
+
+\subsection{Evaluation and Benchmarking}
+\begin{itemize}
+    \item Develop evaluation metrics to measure adherence to chess rules and move quality.
+    \item Compare model performance against established chess engines.
+\end{itemize}
+
+\subsection{Interface Development}
+\begin{itemize}
+    \item Build an interactive chessboard interface using web technologies.
+    \item Integrate the model to enable real-time move suggestions.
+\end{itemize}
+
+\section{First Results}
+\subsection{Preprocessing and Training}
+Initial experiments involved preprocessing 5000 chess games from PGN files. We removed unnecessary data such as move numbers and added a prefix before each game to enable the model to generate the first move.
+
+\subsection{Model Performance}
+For the fine-tuning process, we selected the GPT-2 small model. Although we have a database containing several million chess games, we trained the model on a subset of 5000 games. Training this subset takes approximately 4 hours per epoch. After only 20 minutes of training, the model achieved a promising loss of 0.5.
+
+\subsection{Challenges and Future Work}
+\begin{itemize}
+    \item Extend training to larger datasets to improve loss and prediction accuracy.
+    \item Address limitations in strategic reasoning and adherence to rules.
+\end{itemize}
+
+\textbf{Output Example:}
+\begin{quote}
+\emph{Input Sequence:} ``1. e4 e5 2. Nf3 Nc6 3. Bb5'' \\
+\emph{Predicted Move:} ``a6''
+\end{quote}
+
+\section{Additional Content}
+\subsection{Github Repository}
+\textbf{Github Repo:} \url{https://github.com/samy-hadj/chessLLM}\\
+
+\subsection{Images Placeholder}
+\begin{figure}[h!]
+    \includegraphics[width=\textwidth]{Picture1.png}
+    \caption{Example of an interactive chessboard.}
+    \label{fig:chessboard}
+\end{figure}
+
+\end{document}
