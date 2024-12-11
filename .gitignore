@@ -1,0 +1,5 @@
+.DS_Store
+.vscode/
+__pycache__/
+interface/src/__pycache__/test.cpython-311.pyc
+*.pyc
