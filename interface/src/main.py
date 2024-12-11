@@ -8,6 +8,7 @@ from square import Square
 from move import Move
 import chess
 from test import predict_move
+from move_generator import ia_move_generator
 
 
 # Définir une nouvelle hauteur pour inclure le champ des mouvements
@@ -37,6 +38,33 @@ class Main:
         # Couleurs des boutons
         self.button_color = (200, 50, 50)  # Rouge
         self.button_hover_color = (255, 100, 100)  # Rouge clair
+
+    def display_message(self, message, color=(255, 255, 255), background_color=(0, 0, 0), duration=2):
+        # Récupérer les dimensions de l'écran
+        screen_center = (WINDOW_WIDTH // 2, HEIGHT // 2)
+
+        # Créer la surface du texte
+        message_surface = self.font.render(message, True, color)
+        message_rect = message_surface.get_rect(center=screen_center)
+
+        # Créer un fond légèrement plus grand que le texte
+        background_rect = message_rect.inflate(20, 10)  # Ajouter du padding autour du texte
+
+        # Ajouter un fond semi-transparent
+        transparent_surface = pygame.Surface((background_rect.width, background_rect.height))
+        transparent_surface.set_alpha(180)  # Transparence (0 = totalement transparent, 255 = opaque)
+        transparent_surface.fill(background_color)
+
+        # Afficher le fond et le texte
+        self.screen.blit(transparent_surface, background_rect.topleft)
+        self.screen.blit(message_surface, message_rect)
+
+        # Mettre à jour l'affichage
+        pygame.display.update()
+
+        # Pause pour la durée du message
+        pygame.time.wait(duration * 1000)
+
 
     def convert_to_standard_algebric(self,input_moves):
         """
@@ -181,7 +209,7 @@ class Main:
                         # Convertir la chaîne de log en notation algébrique standard
                         standard_log =  self.log
                         res = self.convert_to_standard_algebric(standard_log)
-                        print("ZZZZZZZZZ",res)  # Imprime les logs convertis dans la console
+                        print("log:" + res)  # Imprime les logs convertis dans la console
 
                     # Vérification si le bouton RESET est cliqué
                     elif self.button_reset_rect.collidepoint(event.pos):
@@ -196,16 +224,23 @@ class Main:
                         if self.highlight_squares:  # Si des cases sont déjà colorées, on les réinitialise
                             self.highlight_squares = []
                         else:
-                            ai_move = predict_move(self.log)  # Appelle la fonction predict_move
-                            if len(ai_move) == 4:  # Vérifie si le mouvement est complet (exemple : "e2e4")
-                                start_col = ord(ai_move[0]) - 97
-                                start_row = 8 - int(ai_move[1])
-                                end_col = ord(ai_move[2]) - 97
-                                end_row = 8 - int(ai_move[3])
-                                self.highlight_squares = [
-                                    (start_row, start_col),
-                                    (end_row, end_col),
-                                ]  # Cases à colorier
+                            standard_log =  self.log
+                            algebric_input = self.convert_to_standard_algebric(standard_log)
+                            ai_move = ia_move_generator(algebric_input)
+                            if ai_move is None:
+                                # Afficher un message à l'écran si aucun coup valide n'est trouvé
+                                self.display_message("No valid AI move!", color=(255, 255, 255), background_color=(255, 0, 0), duration=5)
+                            else:
+                                #print("ia move:" + ai_move + ".")
+                                if len(ai_move) == 4:  # Vérifie si le mouvement est complet (exemple : "e2e4")
+                                    start_col = ord(ai_move[0]) - 97
+                                    start_row = 8 - int(ai_move[1])
+                                    end_col = ord(ai_move[2]) - 97
+                                    end_row = 8 - int(ai_move[3])
+                                    self.highlight_squares = [
+                                        (start_row, start_col),
+                                        (end_row, end_col),
+                                    ]   # Cases à colorier
 
                     # Déplacement d'une pièce
                     else:

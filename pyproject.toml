@@ -6,7 +6,9 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "ipykernel>=6.29.5",
+    "pygame>=2.6.1",
     "python-chess>=1.999",
+    "stockfish>=3.28.0",
     "torch>=2.5.1",
     "transformers>=4.46.3",
 ]
