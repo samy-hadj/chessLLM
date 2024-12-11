@@ -7,15 +7,8 @@ from game import Game
 from square import Square
 from move import Move
 import chess
+from test import predict_move
 
-
-# Charger dynamiquement la fonction predict_move depuis test.py
-spec = importlib.util.spec_from_file_location(
-    "test", "/Users/jasonperez/Desktop/Ing2/NLP2/chessLLM/test.py"
-)
-test_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(test_module)
-predict_move = test_module.predict_move  # Importer la fonction predict_move
 
 # Définir une nouvelle hauteur pour inclure le champ des mouvements
 LOG_PANEL_HEIGHT = 50
