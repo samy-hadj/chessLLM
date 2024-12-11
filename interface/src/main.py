@@ -6,6 +6,8 @@ from const import *
 from game import Game
 from square import Square
 from move import Move
+import chess
+
 
 # Charger dynamiquement la fonction predict_move depuis test.py
 spec = importlib.util.spec_from_file_location(
@@ -30,7 +32,8 @@ class Main:
         pygame.display.set_caption('Chess')
         self.game = Game()
         self.font = pygame.font.Font(None, 24)  # Police pour les boutons et le texte
-        self.log = "Début de la partie:"  # Texte unique pour les mouvements
+        self.log = ""  # Texte unique pour les mouvements en notation PGN
+        self.move_counter = 1  # Compteur de mouvements
         self.highlight_squares = []  # Stocke les cases à colorier en bleu
 
         # Boutons
@@ -41,6 +44,40 @@ class Main:
         # Couleurs des boutons
         self.button_color = (200, 50, 50)  # Rouge
         self.button_hover_color = (255, 100, 100)  # Rouge clair
+
+    def convert_to_standard_algebric(self,input_moves):
+        """
+        Convertit une séquence de coups en notation longue (e.g., d2d4 e7e5)
+        en notation algébrique standard (e.g., d4 e5).
+
+        Args:
+            input_moves (str): Une séquence de coups en notation longue (ex: "d2d4 e7e5 d1d3 e5d4").
+
+        Returns:
+            str: La séquence de coups convertis en notation algébrique standard.
+        """
+        # Initialiser un échiquier
+        board = chess.Board()
+
+        # Séparer les coups
+        moves = input_moves.split()
+        standard_moves = []
+
+        for move in moves:
+            # Convertir le coup en format UCI
+            uci_move = move
+            chess_move = chess.Move.from_uci(uci_move)
+
+            if chess_move in board.legal_moves:
+                # Convertir en notation algébrique standard
+                standard_moves.append(board.san(chess_move))
+                # Appliquer le coup sur l'échiquier
+                board.push(chess_move)
+            else:
+                raise ValueError(f"Coup illégal détecté : {uci_move}")
+
+        # Joindre les coups convertis en une chaîne
+        return " ".join(standard_moves)
 
     def draw_side_panel(self):
         """Dessine le panneau latéral et les boutons."""
@@ -95,15 +132,24 @@ class Main:
                 pygame.draw.rect(self.screen, (0, 0, 255), rect)
 
     def update_log(self, move):
-        """Met à jour le champ des mouvements avec le dernier mouvement."""
-        initial = f"{chr(move.initial.col + 97)}{8 - move.initial.row}"  # Conversion en notation d'échecs
-        final = f"{chr(move.final.col + 97)}{8 - move.final.row}"
-        move_notation = f"{initial}{final}"  # Exemple: e2e4
-        self.log += f" {move_notation}"
+        """Met à jour le champ des mouvements avec le dernier mouvement en notation algébrique sans numéros."""
+        # Conversion des coordonnées initiales et finales en notation algébrique
+        initial = f"{chr(move.initial.col + 97)}{8 - move.initial.row}"  # Exemple: e2
+        final = f"{chr(move.final.col + 97)}{8 - move.final.row}"  # Exemple: e4
+
+        # Gestion des captures
+        captured_piece = self.game.board.squares[move.final.row][move.final.col].piece
+        if captured_piece:
+            move_notation = f"{initial}{final}"  # Exemple: e2xe4 pour une capture
+        else:
+            move_notation = f"{final}"  # Exemple: e4
+
+        # Ajout au log sans numéros de coups
+        self.log += f"{move_notation} "
 
     def reset_log(self):
         """Réinitialise le champ des mouvements."""
-        self.log = "Début de la partie:"
+        self.log = ""  # Efface les logs
 
     def mainloop(self):
         screen = self.screen
@@ -137,10 +183,12 @@ class Main:
                 # Gestion des clics de souris
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     dragger.update_mouse(event.pos)
-
                     # Vérification si le bouton PRINT LOG est cliqué
                     if self.button_print_log_rect.collidepoint(event.pos):
-                        print(self.log)  # Imprime les logs actuels dans la console
+                        # Convertir la chaîne de log en notation algébrique standard
+                        standard_log =  self.log
+                        res = self.convert_to_standard_algebric(standard_log)
+                        print("ZZZZZZZZZ",res)  # Imprime les logs convertis dans la console
 
                     # Vérification si le bouton RESET est cliqué
                     elif self.button_reset_rect.collidepoint(event.pos):
