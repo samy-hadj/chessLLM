@@ -1,36 +1,84 @@
 # ChessLLM: Chess Game Assistant Powered by an LLM
 
 ### Project Members
-- **Briac Six**
-- **Jason Perez**
-- **Samy Hadj-said**
+- **Briac Six**  
+- **Jason Perez**  
+- **Samy Hadj-said**  
 
-### Project Overview
-ChessLLM is a research project exploring the use of a language model (GPT-like) to analyze chess games and suggest optimal moves. Unlike traditional chess engines that rely on brute-force search, ChessLLM leverages the pattern recognition abilities of language models to understand strategies embedded in millions of historical games.
+---
 
-### Objectives
-- **Understanding Chess Rules**: Train the model to avoid illegal moves while promoting winning strategies.
-- **Training on Historical Games**: Utilize PGN-formatted game data to train the model on quality move sequences.
-- **Interactive Interface**: Build a real-time chessboard interface that allows users to receive move recommendations interactively.
+## Project Overview  
+ChessLLM is an assistant powered by an advanced language model (GPT-like) designed to analyze chess games and suggest optimal moves. Unlike traditional chess engines that rely on brute-force search, ChessLLM leverages the pattern recognition capabilities of language models to understand strategies embedded in millions of historical games.  
 
-### Features
-- **Data Preprocessing**: Extract and format move sequences from PGN files.
-- **Training a GPT Model**: Fine-tune on chess game sequences to provide move recommendations.
-- **Interactive Web Interface**: Display a chessboard with real-time move suggestions for interactive learning.
+---
 
-### Installation
-Clone the repository and install dependencies:
-```bash
-git clone https://github.com/samy-hadj/chessLLM.git
-cd chessLLM
+## Objectives  
+- **Understanding Chess Rules**: Ensure the model avoids illegal moves while promoting winning strategies.  
+- **Training on Historical Games**: Train the model on PGN-formatted game data to learn high-quality move sequences.  
+- **Interactive Interface**: Create a real-time chessboard interface that provides move recommendations interactively.  
+
+---
+
+## Project Structure  
+The repository is organized as follows:  
+
 ```
+assets/                     # Static assets (images, icons, etc.)
+interface/                  # Code for the interactive chessboard
+.gitignore                  # Files and directories to ignore in version control
+ChessLLM.ipynb              # Main notebook for exploratory development
+README.md                   # Project documentation
+Rapport.pdf                 # Project report in PDF format
+chess-llm.ipynb             # Notebook for testing and deploying the model
+data_visualisation.ipynb    # Notebook for visualizing training data
+entrainement.ipynb          # Notebook for training the model
+pyproject.toml              # Dependency and configuration file for Python tools
+rapport.tex                 # LaTeX source file for the project report
+uv.lock                     # Dependency lock file
+```  
 
-### Usage
-1. Run the training script to train the model on chess games.
-2. Launch the interactive interface to play and receive move suggestions.
+---
 
-### Preliminary Results
-The current model, based on GPT-2, has shown promising performance after initial training sessions. Expanding the dataset is planned to improve the accuracy and quality of suggested moves.
+## Implementation Details  
+### 1. **Data Preprocessing**  
+   PGN (Portable Game Notation) files are parsed and formatted to extract structured move sequences. These sequences serve as the training data for the model.  
 
-### Contributions
-Contributions are welcome! Please submit a pull request or report issues in the relevant sections.
+### 2. **Model Training**  
+   - Fine-tune a GPT-based model on the processed chess data.  
+   - Use transfer learning to leverage pre-trained language model capabilities, enhancing performance on chess-specific tasks.  
+
+### 3. **Interactive Interface**  
+   A web-based chessboard interface is implemented to:  
+   - Display real-time move suggestions.  
+   - Allow users to play against the AI or analyze historical games.  
+
+---
+
+## Running the ChessLLM Interface
+
+To execute the interactive chessboard interface, follow these steps:
+
+### 1. **Place the model in models/best_model**  
+
+### 2. **Navigate to the Interface Directory**  
+   Open your terminal and navigate to the `interface/src/` directory:
+   ```bash
+   cd path/to/chessLLM/interface/src/
+   ```
+
+### 3. **Install Dependencies Using `uv.lock`**  
+   ChessLLM uses `uv.lock` for managing dependencies. To install all the required dependencies, run the following command in the root of your project directory (where `uv.lock` is located):
+   ```bash
+   uv sync
+   ```
+   This will install all the necessary dependencies specified in `uv.lock`.
+
+### 4. **Run the Interface**  
+   Once the dependencies are installed, execute the `main.py` script to launch the chessboard:
+   ```bash
+   python main.py
+   ```
+
+### 4. **Interacting with the Interface**  
+   - The chessboard will open, allowing you to play a game and receive move suggestions.
+   - Moves will be logged in PGN format for analysis.
