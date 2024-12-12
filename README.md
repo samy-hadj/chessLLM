@@ -79,6 +79,6 @@ To execute the interactive chessboard interface, follow these steps:
    python main.py
    ```
 
-### 4. **Interacting with the Interface**  
+### 5. **Interacting with the Interface**  
    - The chessboard will open, allowing you to play a game and receive move suggestions.
    - Moves will be logged in PGN format for analysis.
